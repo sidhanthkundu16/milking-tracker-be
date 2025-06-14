@@ -6,7 +6,7 @@ import {
 import { InjectModel } from '@nestjs/sequelize';
 import { Session } from './session.model';
 import { CreateSessionDto } from './session.dto';
-import { ValidationError, DatabaseError } from 'sequelize';
+import { DatabaseError } from 'sequelize';
 
 @Injectable()
 export class SessionService {
@@ -23,23 +23,24 @@ export class SessionService {
       const createdSession = await this.sessionModel.create(serializeData);
       return createdSession;
     } catch (error) {
-      if (error instanceof ValidationError) {
-        throw new BadRequestException(
-          error.errors.map((e) => e.message).join(', '),
-        );
-      }
-
       if (error instanceof DatabaseError) {
         throw new InternalServerErrorException('Database error occurred');
       }
-      throw new InternalServerErrorException('Failed to create session');
+      throw error;
     }
   }
 
-  async findAll() {
+  async findAll(limit: number, offset: number) {
     try {
-      const sessions = await this.sessionModel.findAll();
-      return sessions;
+      const sessions = await this.sessionModel.findAll({
+        limit,
+        offset,
+        order: [['created_at', 'DESC']],
+      });
+
+      const count = await this.sessionModel.count();
+
+      return { data: sessions, count };
     } catch {
       throw new InternalServerErrorException('Failed to fetch sessions');
     }
