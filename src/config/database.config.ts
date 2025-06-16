@@ -1,24 +1,3 @@
-// import { SequelizeModuleOptions } from '@nestjs/sequelize';
-// import { MODELS } from 'src/include.model';
-
-// export const databaseConfig: SequelizeModuleOptions = {
-//   dialect: 'postgres',
-//   host: 'ep-bold-forest-a9g6mmyp-pooler.gwc.azure.neon.tech',
-//   port: 5432,
-//   username: 'prod_owner',
-//   password: 'npg_l0KRX1AbrGmT',
-//   database: 'prod',
-//   models: [...MODELS],
-//   autoLoadModels: true,
-//   synchronize: true,
-//   dialectOptions: {
-//     ssl: {
-//       require: true,
-//       rejectUnauthorized: false,
-//     },
-//   },
-// };
-
 import { SequelizeModuleOptions } from '@nestjs/sequelize';
 import { MODELS } from 'src/include.model';
 
